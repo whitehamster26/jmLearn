@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
@@ -101,7 +101,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
+        List<User> users = new LinkedList<>();
         try (Query query = new Query("SELECT * FROM users;", false)) {
             query.apply();
             ResultSet rs = query.getResultSet();

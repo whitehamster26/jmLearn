@@ -3,107 +3,69 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    private Util connectionUtil;
 
     public UserDaoJDBCImpl() {
-        connectionUtil = new Util();
     }
 
-    private class Query implements AutoCloseable {
-        private Connection conn = connectionUtil.getConnection();
-        private Statement stmt;
-        private ResultSet resultSet;
-        private String query;
-        private boolean update;
+    public void createUsersTable() {
+        String queryString = "CREATE TABLE IF NOT EXISTS users(";
+        queryString += "id INT NOT NULL AUTO_INCREMENT,";
+        queryString += "name VARCHAR(50) NOT NULL,";
+        queryString += "lastName VARCHAR(50) NOT NULL,";
+        queryString += "age INT NOT NULL,";
+        queryString += "PRIMARY KEY (id));";
 
-        Query(String query, boolean update) {
-            this.query = query;
-            this.update = update;
-
-            try {
-                stmt = conn.createStatement();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void apply() {
-            try {
-                if (update) {
-                    stmt.execute(query);
-                } else {
-                    resultSet = stmt.executeQuery(query);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public ResultSet getResultSet() {
-            if (update) {
-                throw new RuntimeException("There's no ResultSet in Update query");
-            } else {
-                return resultSet;
-            }
-        }
-
-
-        @Override
-        public void close() throws Exception {
-            conn.close();
-            stmt.close();
-            if (resultSet != null) {
-                resultSet.close();
-            }
-        }
-    }
-
-
-    private void updateQuery(String query) {
-        try (Query dbQuery = new Query(query, true)) {
-            dbQuery.apply();
+        try (Query query = new Query()) {
+            query.getStatement(queryString);
+            query.apply(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void createUsersTable() {
-        String query = "CREATE TABLE IF NOT EXISTS users(";
-        query += "id INT NOT NULL AUTO_INCREMENT,";
-        query += "name VARCHAR(50) NOT NULL,";
-        query += "lastName VARCHAR(50) NOT NULL,";
-        query += "age INT NOT NULL,";
-        query += "PRIMARY KEY (id));";
-        updateQuery(query);
-    }
-
     public void dropUsersTable() {
-        updateQuery("DROP TABLE IF EXISTS users;");
+        try (Query query = new Query()) {
+            query.getStatement("DROP TABLE IF EXISTS users;");
+            query.apply(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String query;
-        query = "INSERT INTO users(name, lastName, age) VALUES";
-        query += String.format("('%s', '%s', %d);", name, lastName, age);
-        updateQuery(query);
+        String queryString = "INSERT INTO users(name, lastName, age) VALUES (?, ?, ?);";
+        try (Query query = new Query()) {
+            PreparedStatement stmt = query.getStatement(queryString);
+            stmt.setString(1, name);
+            stmt.setString(2, lastName);
+            stmt.setByte(3, age);
+            query.apply(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void removeUserById(long id) {
-        updateQuery(String.format("DELETE FROM users WHERE id=%d", id));
+        String queryString = "DELETE FROM users WHERE id=?;";
+        try (Query query = new Query()) {
+            PreparedStatement stmt = query.getStatement(queryString);
+            stmt.setLong(1, id);
+            query.apply(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<User> getAllUsers() {
         List<User> users = new LinkedList<>();
-        try (Query query = new Query("SELECT * FROM users;", false)) {
-            query.apply();
+        try (Query query = new Query()) {
+            query.getStatement("SELECT * FROM users;");
+            query.apply(false);
             ResultSet rs = query.getResultSet();
 
             while (rs.next()) {
@@ -120,6 +82,11 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        updateQuery("TRUNCATE users;");
+        try (Query query = new Query()) {
+            query.getStatement("TRUNCATE users;");
+            query.apply(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -62,6 +62,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public List<User> getAllUsers() {
+        // Создаем LinkedList т.к. нам не нужен произвольный доступ, и его проще расширять.
         List<User> users = new LinkedList<>();
         try (Query query = new Query()) {
             query.getStatement("SELECT * FROM users;");

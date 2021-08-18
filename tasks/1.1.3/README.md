@@ -1,3 +1,10 @@
+<h3>Попытка 3</h3>
+<ol>
+<li>Метод getConnection теперь статический, чтобы в Dao не хранить ссылку на Util</li>
+<li>Connection тепрь закрывается в конце работы приложения</li>
+<li>Query.close теперь закрывает только PreparedStatement</li>
+<li>Конструктор Query теперь принимает Connection</li>
+</ol>
 <h3>Попытка 2</h3>
 <ol>
 <li>

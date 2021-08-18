@@ -6,9 +6,9 @@ public class Util {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/task_113?useSSL=false";
     private static final String USER_NAME = "jmlearn";
     private static final String PASS_WORD = "1234";
+    private static Connection conn;
 
-    public Connection getConnection() {
-        Connection conn = null;
+    static public Connection getConnection() {
         try {
             conn = DriverManager.getConnection(
                     DB_URL, USER_NAME, PASS_WORD);
@@ -16,5 +16,15 @@ public class Util {
             e.printStackTrace();
         }
         return conn;
+    }
+
+    static public void closeConnection() {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

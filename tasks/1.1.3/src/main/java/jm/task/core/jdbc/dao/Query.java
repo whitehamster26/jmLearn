@@ -8,15 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 class Query implements AutoCloseable {
-    private Util connectionUtil;
     private Connection conn;
     private PreparedStatement stmt;
     private ResultSet resultSet;
     private boolean update;
 
-    Query() {
-        connectionUtil = new Util();
-        conn = connectionUtil.getConnection();
+    Query(Connection conn) {
+        this.conn = conn;
     }
 
     public PreparedStatement getStatement(String query) {
@@ -52,10 +50,6 @@ class Query implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        conn.close();
         stmt.close();
-        if (resultSet != null) {
-            resultSet.close();
-        }
     }
 }

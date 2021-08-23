@@ -7,13 +7,17 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.Properties;
 
 public class HibernateSessionFactoryUtil {
     private static SessionFactory sessionFactory;
-    private static Properties properties = new Properties();
+    private static Properties properties;
 
     static {
+        properties = new Properties();
         properties.setProperty(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
         properties.setProperty(Environment.DRIVER, "com.mysql.jdbc.Driver");
         properties.setProperty(Environment.USER, Credentials.USER_NAME);

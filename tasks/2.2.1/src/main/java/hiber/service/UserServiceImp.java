@@ -34,15 +34,7 @@ public class UserServiceImp implements UserService {
    @Transactional(readOnly = true)
    @Override
    public User getUserByCar(String model, int series) {
-      User user = null;
-      @SuppressWarnings("unchecked")
-      TypedQuery<User> usersQuery = sessionFactory.getCurrentSession().createQuery(
-                      "select u from User as u join u.car as c where c.model = :model and c.series = :series",
-                      User.class)
-              .setParameter("model", model)
-              .setParameter("series", series);
-      user = usersQuery.getSingleResult();
-      return user;
+      return userDao.getUserByCar(model, series);
    }
 
 }

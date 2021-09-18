@@ -3,10 +3,7 @@ package web.dao;
 import org.springframework.stereotype.Repository;
 import web.models.Car;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -14,7 +11,7 @@ public class CarDaoImpl implements CarDao {
     private List<Car> cars;
 
     public CarDaoImpl() {
-        cars = new LinkedList<>();
+        cars = new ArrayList<>();
         cars.add(new Car(0, "Honda civic 6", (short) 1998));
         cars.add(new Car(1, "Honda CR-V", (short) 2002));
         cars.add(new Car(2, "Honda accord", (short) 2006));
@@ -24,7 +21,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public List<Car> getCars() {
-        return cars;
+        return Collections.unmodifiableList(cars);
     }
 
     @Override

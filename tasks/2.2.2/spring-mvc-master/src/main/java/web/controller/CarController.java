@@ -1,14 +1,12 @@
 package web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import web.models.Car;
 import web.service.CarService;
 
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -17,16 +15,15 @@ public class CarController {
 
     private CarService carService;
 
-    public CarController(@Autowired CarService carService) {
+    public CarController(CarService carService) {
         this.carService = carService;
     }
 
     @GetMapping(value = "/cars")
-    public String printWelcome(ModelMap model, HttpServletRequest request) {
-        String countParam = request.getParameter("count");
+    public String printWelcome(ModelMap model, @RequestParam(required = false) String count) {
         List<Car> cars = null;
-        if (countParam != null) {
-            cars = carService.getCars(Integer.parseInt(countParam));
+        if (count != null) {
+            cars = carService.getCars(Integer.parseInt(count));
         } else {
             cars = carService.getCars();
         }

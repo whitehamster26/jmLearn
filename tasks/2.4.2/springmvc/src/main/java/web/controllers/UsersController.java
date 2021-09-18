@@ -50,13 +50,14 @@ public class UsersController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateUserPage(@PathVariable long id, ModelMap model) {
+    public String createUserPage(@PathVariable long id, ModelMap model) {
         model.addAttribute("user", userService.getById(id));
         return "update";
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String createUser(@PathVariable long id, @ModelAttribute("user") User user) {
+        //user.setId(id);
         userService.update(user);
         return "redirect:/users/list";
     }

@@ -57,10 +57,8 @@ public class UsersController {
 
     @PostMapping("/update/{id}")
     public String createUser(@PathVariable long id, @ModelAttribute("user") User user) {
-        User userFromDb = userService.getById(id);
-        userFromDb.setName(user.getName());
-        userFromDb.setAge(user.getAge());
-        userService.update(userFromDb);
+        user.setId(id);
+        userService.update(user);
         return "redirect:/users/list";
     }
 }

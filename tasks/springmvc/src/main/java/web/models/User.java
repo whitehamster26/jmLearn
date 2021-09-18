@@ -7,13 +7,17 @@ import javax.persistence.Id;
 
 @Entity
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private byte age;
 
-    public User() {};
+    public User() {
+    }
+
+    ;
 
     public User(String name, byte age) {
         this.name = name;
@@ -26,6 +30,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setName(String name) {

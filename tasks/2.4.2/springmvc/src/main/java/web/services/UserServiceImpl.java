@@ -1,23 +1,36 @@
 package web.services;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDao;
+import web.models.Role;
 import web.models.User;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
+    private RoleService roleService;
+    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
     public void save(User user) {
+        if (user.getRoles() == null || user.getRoles().size() == 0) {
+            user.setRoles(new HashSet<>());
+            user.addRole(roleService.getByName("USER"));
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
@@ -37,6 +50,12 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User getById(long id) {
         return userDao.getById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User getByName(String name) {
+        return userDao.getByName(name);
     }
 
     @Override

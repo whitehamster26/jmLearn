@@ -2,14 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Creation</title>
+    <title>User Updating</title>
 </head>
 <body>
-    <h1>User Updating</h1>
-    <form action="#" th:action="@{'/users/update/' + ${user.id}}" th:object="${user}" method="post">
-        <p>Name: <input type="text" th:field="*{name}" /></p>
+    <div style="display: flex; justify-content: space-between; width: 80%; align-items: center">
+        <h1>User Updating</h1>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+    <form action="#" th:action="@{'./' + ${user.id}}" th:object="${user}" method="post">
+        <p>Name: <input type="text" th:field="*{username}" /></p>
         <p>Age: <input type="text" th:field="*{age}" /></p>
-        <p><input type="submit" value="Submit" /> <a href="/users/list">Cancel</a></p>
+        <p><input type="submit" value="Submit" /> <a href="../">Cancel</a></p>
     </form>
 </body>
 </html>

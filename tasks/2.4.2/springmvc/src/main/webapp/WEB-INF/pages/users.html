@@ -27,10 +27,13 @@
 </head>
 <body>
     <section class="main-content">
-        <h1 class="title">My very own MVC app</h1>
+        <div style="display: flex; justify-content: space-between; width: 80%; align-items: center">
+            <h1>My very own MVC app</h1>
+            <a th:href="@{/logout}">Logout</a>
+        </div>
         <div style="display: flex">
             <h3>List of users</h3>
-            <a href="/users/create" style="margin-left: 1rem; align-self: center">Create user</a>
+            <a href="./create/" style="margin-left: 1rem; align-self: center">Create user</a>
         </div>
         <table class="table">
             <thead>
@@ -42,10 +45,10 @@
             </thead>
             <tbody>
                 <tr th:block th:each="user : ${users}">
-                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.username}"></td>
                     <td class="age" th:text="${user.age}"></td>
                     <td class="btn-group">
-                        <a th:href="@{'/users/delete/' + ${user.id}}">Delete</a><a th:href="@{'/users/update/' + ${user.id}}">Update</a>
+                        <a th:href="@{'./delete/' + ${user.id}}">Delete</a><a th:href="@{'./update/' + ${user.id}}">Update</a>
                     </td>
                 </tr>
             </tbody>

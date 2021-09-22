@@ -25,14 +25,14 @@ public class UsersController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUserConfirm(@PathVariable long id, ModelMap model) {
+    public String deleteUserConfirm(@PathVariable Long id, ModelMap model) {
         User user = userService.getById(id);
         model.addAttribute("user", user);
         return "delete";
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable long id) {
+    public String deleteUser(@PathVariable Long id) {
         userService.remove(id);
         return "redirect:/users/list";
     }
@@ -50,7 +50,7 @@ public class UsersController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateUserPage(@PathVariable long id, ModelMap model) {
+    public String updateUserPage(@PathVariable Long id, ModelMap model) {
         model.addAttribute("user", userService.getById(id));
         return "update";
     }

@@ -24,7 +24,9 @@ public class RoleDaoJpaImpl implements RoleDao {
 
     @Override
     public void remove(long id) {
-        entityManager.remove(getById(id));
+        entityManager.createQuery("delete from Role r where r.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Override

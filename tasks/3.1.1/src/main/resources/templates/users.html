@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring MVC</title>
+    <style>
+        .main-content {
+            margin: 3rem;
+        }
+        .table {
+            border-collapse: collapse;
+        }
+        .table, .table th, .table td {
+            border: 1px solid black;
+            width: 50%
+        }
+        .table th, .table td {
+            padding: 0.3rem;
+        }
+        .table .age {
+            text-align: center;
+        }
+        .btn-group a {
+            padding-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <section class="main-content">
+        <div style="display: flex; justify-content: space-between; width: 80%; align-items: center">
+            <h1>My very own MVC app</h1>
+            <a th:href="@{/logout}">Logout</a>
+        </div>
+        <div style="display: flex">
+            <h3>List of users</h3>
+            <a href="./create/" style="margin-left: 1rem; align-self: center">Create user</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:block th:each="user : ${users}">
+                    <td th:text="${user.username}"></td>
+                    <td class="age" th:text="${user.age}"></td>
+                    <td class="btn-group">
+                        <a th:href="@{'./delete/' + ${user.id}}">Delete</a><a th:href="@{'./update/' + ${user.id}}">Update</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>

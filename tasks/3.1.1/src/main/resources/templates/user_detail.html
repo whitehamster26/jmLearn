@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Detail Page</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: space-between; width: 80%; align-items: center">
+        <h1>User Detail</h1>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+    <p><strong>Username </strong><span th:text="${user.username}"></span></p>
+    <p><strong>Age </strong><span th:text="${user.age}"></span></p>
+</body>
+</html>

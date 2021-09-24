@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Deleting ' + ${user.username}"></title>
+</head>
+<body style="padding: 4rem">
+    <h2 th:text="'Deleting ' + ${user.username}"></h2>
+    <p th:text="'Do you want to delete ' + ${user.username} + '?'"></p>
+    <form action="#" th:action="@{'./' + ${user.id}}" th:object="${user}" method="post">
+        <p><input type="submit" value="Delete" /> <a href="../">Cancel</a></p>
+    </form>
+</body>
+</html>
